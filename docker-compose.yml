@@ -1,0 +1,24 @@
+version: '3.8'
+
+x-base:
+  &base
+  networks:
+    - test_net
+  restart: always
+
+services:
+  back:
+    <<: *base
+    build: containers/back
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./back/app:/app
+      - ./back/app/temp:/app/temp
+      - ./back/app/dist:/app/dist
+      - ./back/app/node_modules:/node_modules
+
+networks:
+  test_net:
+    driver: bridge
+

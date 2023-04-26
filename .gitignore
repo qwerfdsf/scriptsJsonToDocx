@@ -1,3 +1,7 @@
-/node_modules
-package-lock.json
-.idea
+# IDEs and editors
+/.idea
+/front/client/node_modules
+/front/client/package-lock.json
+back/app/node_modules
+back/app/package-lock.json
+
