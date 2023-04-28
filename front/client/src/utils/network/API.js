@@ -10,9 +10,7 @@ class Api {
   constructor(
   ) {
     this.instance = axios.create({
-      withCredentials: true,
       baseURL: 'http://localhost:8082',
-      mode: 'cors',
       headers: {
         'X-Requested-With': 'XMLHttpRequest',
       },
