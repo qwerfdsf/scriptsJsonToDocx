@@ -1,22 +1,23 @@
-require('dotenv').config();
+require("dotenv").config();
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 
-const { VuetifyLoaderPlugin } = require('vuetify-loader');
+const { VuetifyLoaderPlugin } = require("vuetify-loader");
 
-const sass = require('sass');
+const sass = require("sass");
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === "production";
 
 const additionalConfig = {};
 if (!isProduction) {
-  additionalConfig.exclude = '/node_modules/';
+  additionalConfig.exclude = "/node_modules/";
 }
 const config = {
-  entry: './src/main.js',
+  entry: "./src/main.js",
   output: {
-    publicPath: '/',
+    publicPath: "/",
     clean: true,
   },
   stats: {
@@ -28,58 +29,67 @@ const config = {
     },
     compress: true,
     open: true,
-    host: 'localhost',
+    host: "localhost",
     port: 3000,
     hot: true,
     historyApiFallback: true,
   },
   cache: true,
-  target: 'web',
+  target: "web",
   plugins: [
     new HtmlWebpackPlugin({
-      template: '../public/index.html',
-      baseUrl: '/',
+      template: "../public/index.html",
+      baseUrl: "/",
+    }),
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+      process: "process/browser",
     }),
     new VueLoaderPlugin(),
     new VuetifyLoaderPlugin({
       // eslint-disable-next-line consistent-return
       match(originalTag, { kebabTag, camelTag }) {
-        if (kebabTag.startsWith('core-')) {
-          return [camelTag, `import ${camelTag} from '@/components/core/${camelTag.substring(4)}.vue'`];
+        if (kebabTag.startsWith("core-")) {
+          return [
+            camelTag,
+            `import ${camelTag} from '@/components/core/${camelTag.substring(
+              4,
+            )}.vue'`,
+          ];
         }
       },
     }),
   ],
   resolve: {
     symlinks: false,
-    extensions: ['*', '.js', '.vue', '.json'],
+    extensions: ["*", ".js", ".vue", ".json"],
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         ...additionalConfig,
-        loader: 'babel-loader',
+        loader: "babel-loader",
       },
       {
         test: /\.css$/i,
         ...additionalConfig,
         use: [
-          'style-loader',
+          "style-loader",
           {
-            loader: 'css-loader?url=false',
+            loader: "css-loader?url=false",
           },
-          'postcss-loader',
+          "postcss-loader",
         ],
       },
       {
         test: /\.s[ac]ss$/i,
         ...additionalConfig,
         use: [
-          'vue-style-loader',
-          'css-loader',
+          "vue-style-loader",
+          "css-loader",
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
               implementation: sass,
               sassOptions: {
@@ -92,29 +102,29 @@ const config = {
       },
       {
         test: /\.(png|jpg|gif|svg)$/i,
-        loader: 'file-loader',
+        loader: "file-loader",
         ...additionalConfig,
         options: {
-          name: './assets/images/[name].[ext]?[hash]',
+          name: "./assets/images/[name].[ext]?[hash]",
         },
       },
       {
         test: /\.(eot|ttf|woff|woff2|otf)$/,
-        loader: 'file-loader',
+        loader: "file-loader",
         options: {
-          name: './assets/fonts/[name].[ext]',
+          name: "./assets/fonts/[name].[ext]",
         },
       },
       {
         test: /\.vue$/,
-        loader: 'vue-loader',
+        loader: "vue-loader",
         options: {
           extractCSS: isProduction,
           loaders: {
             sass: [
-              'vue-style-loader',
-              'css-loader',
-              'sass-loader?indentedSyntax',
+              "vue-style-loader",
+              "css-loader",
+              "sass-loader?indentedSyntax",
             ],
           },
         },
@@ -124,7 +134,7 @@ const config = {
 };
 
 module.exports = () => {
-  config.mode = 'development';
-  config.devtool = 'eval-cheap-source-map';
+  config.mode = "development";
+  config.devtool = "eval-cheap-source-map";
   return config;
 };
