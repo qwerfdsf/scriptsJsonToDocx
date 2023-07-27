@@ -1,24 +1,22 @@
 <template>
   <v-app>
     <div>
-      <template>
-        <v-file-input
-          show-size
-          label="File input"
-          @change="click"
-        ></v-file-input>
-      </template>
+      <v-file-input
+        show-size
+        label="File input"
+        @change="click"
+      />
     </div>
   </v-app>
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 
 export default {
-  name: "App",
+  name: 'App',
   methods: {
-    ...mapActions(["click"]),
+    ...mapActions(['click']),
   },
 };
 </script>
